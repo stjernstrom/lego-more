@@ -26,7 +26,9 @@ module Lego
 
     module Matcher
       def self.match_route(route, env)
-        (route[:path] == env['PATH_INFO']) ? [env, {}] : false
+        req = Rack::Request.new(env)
+        match_data = req.params ? { :instance_vars => req.params } : {}
+        (route[:path] == env['PATH_INFO']) ? [env, match_data] : false
       end
     end
   end
